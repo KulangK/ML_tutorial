@@ -8,3 +8,5 @@ each file shows the content from the site below
 files all written in 'jupyter notebook' using 'python' on 'vscode'
 
 all the sources were given by [Zerobase_group](https://zero-base.co.kr/)
+
+### some files need to be rewritten due to too long results (eg. forgot using .head() or .tail())
