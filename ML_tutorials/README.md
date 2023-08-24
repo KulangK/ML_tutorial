@@ -39,3 +39,9 @@ files all written in 'jupyter notebook' using 'python 3.8.16' on 'vscode'
 - Logistic Regression
 - Ensemble
 - HAR data practice (decision tree and random forest)
+
+
+### 7. Boosting & practice
+- GBM (Gradient Boosting Machine)
+- XGBoost (eXtra Gradient Boosting)
+- LGBM (Light GBM)
