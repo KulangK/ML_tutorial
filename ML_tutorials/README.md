@@ -45,3 +45,12 @@ files all written in 'jupyter notebook' using 'python 3.8.16' on 'vscode'
 - GBM (Gradient Boosting Machine)
 - XGBoost (eXtra Gradient Boosting)
 - LGBM (Light GBM)
+
+
+### 8. Credit Card Fraud Detection Practice
+- Data Analysis
+- Applying different MLs (Logistic Regression, Decision Tree, Random Forest, Light GBM)
+- Result comparison between different MLs
+- Applying sclaers on data (Standard Scaler, Log Scaling)
+- Outlier detection and removal
+- SMOTE oversampling
