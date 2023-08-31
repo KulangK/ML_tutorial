@@ -54,3 +54,13 @@ files all written in 'jupyter notebook' using 'python 3.8.16' on 'vscode'
 - Applying sclaers on data (Standard Scaler, Log Scaling)
 - Outlier detection and removal
 - SMOTE oversampling
+
+
+### 9. Natural Language Processing (NLP)
+- Windows NLP setting
+- Morphological Analysis
+- WordCloud
+- Naive Bayes Classification
+- Sentence Similarity Measure
+  - Count Vectorizer
+  - TF-IDF Vectorizer
