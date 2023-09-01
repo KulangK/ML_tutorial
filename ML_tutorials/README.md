@@ -64,3 +64,9 @@ files all written in 'jupyter notebook' using 'python 3.8.16' on 'vscode'
 - Sentence Similarity Measure
   - Count Vectorizer
   - TF-IDF Vectorizer
+
+
+### 10. PCA
+- PCA (Principal Component Analysis)
+- Exercises (Random numbers, iris data, wine data)
+- PCA eigenface (Olivetti data from sklearn)
