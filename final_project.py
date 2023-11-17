@@ -44,22 +44,23 @@ np_df = np_df.values
 
 model = VGG16(weights='imagenet', include_top=False)
 
-
+# webpage head
 st.write('Hello, *Welcome to Tour-Helper!* :sunglasses:')
 
 
+#date selection
 d = st.date_input('Choose Your Trip Date', value=None , min_value=None , max_value=None , key=None )
-st.write('You chose  :', d)
-month = d.month
-day = d.day
+if d:
+    st.write('You chose  :', d)
+    month = d.month
+    day = d.day
 
 
+# image upload
 uploaded_file = st.file_uploader("Upload Your Trip-To-Be Image")
 
-st.image(uploaded_file, caption = 'Uploaded Image')
-
-
 if uploaded_file is not None:
+    st.image(uploaded_file, caption = 'Uploaded Image')
     user_features = extract_features(uploaded_file, model)
     
     similarity = []
