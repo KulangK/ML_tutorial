@@ -59,24 +59,24 @@ uploaded_file = st.file_uploader("Upload Your Trip-To-Be Image")
 st.image(uploaded_file, caption = 'Uploaded Image')
 
 
-
-user_features = extract_features(uploaded_file, model)
-
-similarity = []
-for i in range(0, len(df)):
-  x = cosine_similarity([np_df[i]], [user_features])
-  similarity.append(x)
-
-similarity_list = []
-for i in range(0, len(similarity)):
-  similarity_list.append(similarity[i][0][0])
-
-df['similar_score'] = similarity_list
-
-simil_df = df.sort_values(by='similar_score', ascending=False)
-simil_df = simil_df[['명칭', 'similar_score']].iloc[:20]
-
-trip = pd.merge(simil_df, address, on = '명칭', how = 'inner')
+if uploaded_file is not None:
+    user_features = extract_features(uploaded_file, model)
+    
+    similarity = []
+    for i in range(0, len(df)):
+      x = cosine_similarity([np_df[i]], [user_features])
+      similarity.append(x)
+    
+    similarity_list = []
+    for i in range(0, len(similarity)):
+      similarity_list.append(similarity[i][0][0])
+    
+    df['similar_score'] = similarity_list
+    
+    simil_df = df.sort_values(by='similar_score', ascending=False)
+    simil_df = simil_df[['명칭', 'similar_score']].iloc[:20]
+    
+    trip = pd.merge(simil_df, address, on = '명칭', how = 'inner')
 
 
 # 관광객 수 데이터 조정
@@ -156,4 +156,5 @@ def result_output(result_list, user_month, user_day):
     m.save('result.html')
     return m
 
-st.write(result_output(result_list, month, day))
+if uploaded_file is not None:
+    st.write(result_output(result_list, month, day))
