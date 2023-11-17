@@ -32,7 +32,7 @@ df9 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/
 df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8, df9])
 df.rename(columns={'name':'명칭'}, inplace=True)
 
-address = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourapi_add.csv', encoding='utf-8-sig')
+address = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourapi_add.csv', encoding='utf-8-sig', index_col=0)
 
 np_df = df.drop(columns='명칭')
 np_df = np_df.values
@@ -45,7 +45,8 @@ st.write('Hello, *Welcome to Tour-Helper!* :sunglasses:')
 
 d = st.date_input('Choose Your Trip Date', value=None , min_value=None , max_value=None , key=None )
 st.write('You chose  :', d)
-
+month = d.month
+day = d.day
 
 
 uploaded_file = st.file_uploader("Upload Your Trip-To-Be Image")
@@ -70,7 +71,80 @@ df['similar_score'] = similarity_list
 simil_df = df.sort_values(by='similar_score', ascending=False)
 simil_df = simil_df[['명칭', 'similar_score']].iloc[:20]
 
-st.dataframe(simil_df)
+trip = pd.merge(simil_df, address, on = '명칭', how = 'inner')
 
-result = pd.merge(simil_df, address, on = '명칭', how = 'inner')
-st.dataframe(result)
+
+
+# github 파일 이용한 버전
+
+from IPython.display import HTML, display
+import base64
+import requests
+
+result_list = list(trip['명칭'])
+result_temp = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/temp_test.csv')
+lat_lon_peo = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_peo.csv')
+lat_lon_tem= pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_tem.csv')
+
+def local_find(frame, frame2):
+    for i in range(len(frame)):
+        start = frame.loc[i, '위도'], frame.loc[i, '경도'] 
+        goal = frame2.loc[0, '위도'], frame2.loc[0, '경도'] 
+        frame.loc[i,'거리'] = haversine(start, goal, unit='mi')
+
+    frame.sort_values(by='거리', inplace=True)
+    frame.reset_index(drop=True,inplace=True)
+    return frame.loc[0, '지역']
+
+def result_output(result_list, user_month, user_day):
+    m =folium.Map(location=[36, 127], zoom_start=7.5, tiles='openStreetMap')
+    tooltip = 'Info'
+    # result = []
+    for i in result_list:
+        data = trip[trip['명칭'] == i].reset_index(drop=True)
+        # if data['주소'][0].split(' ')[0] == '경기도':
+        #     address = data['주소'][0].split(' ')[1][:-1]
+        # else:
+        #     address = data['주소'][0].split(' ')[0][:2]
+
+        address = local_find(lat_lon_tem , data)
+        address1 = local_find(lat_lon_peo , data)
+
+        pre_people = result_people[(result_people['si'] == address1) & (result_people['월'] == user_month) & (result_people['일'] == user_day)].reset_index(drop=True)
+        # result.append([address, address1])
+        temp = result_temp[(result_temp['si'] == address) & (result_temp['월'] == user_month) & (result_temp['일'] == user_day)].reset_index(drop=True)
+        
+        # Assuming 'data["사진"].values[0]' contains the image file's raw content URL from GitHub
+        image_url = f'https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/images/{data["사진"].values[0]}'
+        response = requests.get(image_url)
+
+        # Fetch the image content
+        if response.status_code == 200:
+          image_content = requests.get(image_url).content
+        else:
+          image_url = f'https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/images2/{data["사진"].values[0]}'
+          image_content = requests.get(image_url).content
+
+        # Encode the image in base64 format
+        encoded_image = base64.b64encode(image_content).decode()
+
+        # Create the popup content
+        popup_content = f'<div style="width:250px; text-align:center;">'\
+                        f'<strong>{data["명칭"].values[0]}</strong><br><br>'\
+                        f'<img width="250px" src="data:image/jpeg;base64,{encoded_image}"><br><br>'\
+                        f'주소: {data["주소"].values[0]}<br>'\
+                        f'예상 방문객: {round(pre_people["yhat"].values[0])} 명<br>'\
+                        f'예상 온도: {round(temp["yhat"].values[0])} (°C)<br></div>'
+
+        # Create the folium.Marker
+        folium.Marker(
+            [data['위도'], data['경도']],
+            popup=popup_content,
+            tooltip=tooltip,
+            icon=folium.Icon(icon='info-sign')
+        ).add_to(m)
+
+    m.save('result.html')
+    return m
+
+st.write(result_output(result_list, month, day))
