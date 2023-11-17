@@ -89,7 +89,7 @@ if uploaded_file is not None:
     simil_df = simil_df[['명칭', 'similar_score']].iloc[:20]
     
     trip = pd.merge(simil_df, address, on = '명칭', how = 'inner')
-    df.clear()
+    df = None
 
 
 # 관광객 수 데이터 조정
