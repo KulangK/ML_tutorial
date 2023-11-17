@@ -9,3 +9,4 @@ haversine
 base64
 IPython
 requests
+streamlit_folium
