@@ -12,6 +12,7 @@ import base64
 import requests
 import folium
 from haversine import haversine
+from streamlit_folium import folium_static
 
 def extract_features(img_path, model):
     img = Image.open(img_path)
@@ -172,4 +173,4 @@ def result_output(result_list, user_month, user_day):
     return m
 
 if d and uploaded_file is not None:
-    st.write(result_output(result_list, month, day))
+    folium_static(result_output(result_list, month, day))
