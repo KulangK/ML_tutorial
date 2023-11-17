@@ -32,7 +32,7 @@ df9 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/
 df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8, df9])
 df.rename(columns={'name':'명칭'}, inplace=True)
 
-address = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourapi_data.csv', encoding='utf-8-sig')
+address = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourapi_add.csv', encoding='utf-8-sig')
 
 np_df = df.drop(columns='명칭')
 np_df = np_df.values
