@@ -8,3 +8,4 @@ folium
 haversine
 base64
 IPython
+requests
