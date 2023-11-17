@@ -7,6 +7,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import pandas as pd
 from PIL import Image
+from IPython.display import HTML, display
+import base64
+import requests
+import folium
+from haversine import haversine
 
 def extract_features(img_path, model):
     img = Image.open(img_path)
@@ -74,13 +79,17 @@ simil_df = simil_df[['명칭', 'similar_score']].iloc[:20]
 trip = pd.merge(simil_df, address, on = '명칭', how = 'inner')
 
 
+# 관광객 수 데이터 조정
+people = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourist_prediction_2324.csv', encoding='utf-8-sig', index_col=0)
+result_people = people.reset_index(drop=True)
+result_people['월'] = result_people['ds'].apply(lambda x : x.split('-')[1])
+result_people['일'] = result_people['ds'].apply(lambda x : x.split('-')[2])
+result_people['월'] = result_people['월'].astype('int')
+result_people['일'] = result_people['일'].astype('int')
 
-# github 파일 이용한 버전
 
-from IPython.display import HTML, display
-import base64
-import requests
 
+# github 파일 이용한 folium 띄우기
 result_list = list(trip['명칭'])
 result_temp = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/temp_test.csv')
 lat_lon_peo = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_peo.csv')
