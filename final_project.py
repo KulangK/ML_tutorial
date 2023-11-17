@@ -32,81 +32,23 @@ df5 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/
 df6 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/feature_values6.csv', encoding='utf-8-sig', index_col=0)
 df7 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/feature_values7.csv', encoding='utf-8-sig', index_col=0)
 df8 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/feature_values8.csv', encoding='utf-8-sig', index_col=0)
-df9 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/feature_values9.csv', encoding='utf-8-sig', index_col=0)
-
-df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8, df9])
-df.rename(columns={'name':'명칭'}, inplace=True)
-
-# saving ram by removing dfs
-df1 = None
-df2 = None
-df3 = None
-df4 = None
-df5 = None
-df6 = None
-df7 = None
-df8 = None
-df9 = None
-
-address = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourapi_add.csv', encoding='utf-8-sig', index_col=0)
-
-np_df = df.drop(columns='명칭')
-np_df = np_df.values
-
-model = VGG16(weights='imagenet', include_top=False)
-
-# webpage head
-st.write('Hello, *Welcome to Tour-Helper!* :sunglasses:')
-
-
-#date selection
-d = st.date_input('Choose Your Trip Date', value=None , min_value=None , max_value=None , key=None )
-if d:
-    st.write('You chose  :', d)
-    month = d.month
-    day = d.day
-
-
-# image upload
-uploaded_file = st.file_uploader("Upload Your Trip-To-Be Image")
-
-if uploaded_file is not None:
-    st.image(uploaded_file, caption = 'Uploaded Image')
-    user_features = extract_features(uploaded_file, model)
-    
-    similarity = []
-    for i in range(0, len(df)):
-      x = cosine_similarity([np_df[i]], [user_features])
-      similarity.append(x)
-    
-    similarity_list = []
-    for i in range(0, len(similarity)):
-      similarity_list.append(similarity[i][0][0])
-    
-    df['similar_score'] = similarity_list
-    
-    simil_df = df.sort_values(by='similar_score', ascending=False)
-    simil_df = simil_df[['명칭', 'similar_score']].iloc[:20]
-    
-    trip = pd.merge(simil_df, address, on = '명칭', how = 'inner')
-    df = None
-
-
-# 관광객 수 데이터 조정
-people = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourist_prediction_2324.csv', encoding='utf-8-sig', index_col=0)
-result_people = people.reset_index(drop=True)
-result_people['월'] = result_people['ds'].apply(lambda x : x.split('-')[1])
-result_people['일'] = result_people['ds'].apply(lambda x : x.split('-')[2])
-result_people['월'] = result_people['월'].astype('int')
-result_people['일'] = result_people['일'].astype('int')
+df9 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobas기
+    people = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourist_prediction_2324.csv', encoding='utf-8-sig', index_col=0)
+    result_people = people.reset_index(drop=True)
+    result_people['월'] = result_people['ds'].apply(lambda x : x.split('-')[1])
+    result_people['일'] = result_people['ds'].apply(lambda x : x.split('-')[2])
+    result_people['월'] = result_people['월'].astype('int')
+    result_people['일'] = result_people['일'].astype('int')
+    people = None
+    result_list = list(trip['명칭'])
+    result_temp = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/temp_test.csv')
+    lat_lon_peo = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_peo.csv')
+    lat_lon_tem= pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_tem.csv')
 
 
 
 # github 파일 이용한 folium 띄우기
-result_list = list(trip['명칭'])
-result_temp = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/temp_test.csv')
-lat_lon_peo = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_peo.csv')
-lat_lon_tem= pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_tem.csv')
+
 
 def local_find(frame, frame2):
     for i in range(len(frame)):
