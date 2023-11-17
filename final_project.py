@@ -37,6 +37,16 @@ df9 = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/
 df = pd.concat([df1, df2, df3, df4, df5, df6, df7, df8, df9])
 df.rename(columns={'name':'명칭'}, inplace=True)
 
+df1.clear()
+df2.clear()
+df3.clear()
+df4.clear()
+df5.clear()
+df6.clear()
+df7.clear()
+df8.clear()
+df9.clear()
+
 address = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourapi_add.csv', encoding='utf-8-sig', index_col=0)
 
 np_df = df.drop(columns='명칭')
@@ -78,6 +88,7 @@ if uploaded_file is not None:
     simil_df = simil_df[['명칭', 'similar_score']].iloc[:20]
     
     trip = pd.merge(simil_df, address, on = '명칭', how = 'inner')
+    df.clear()
 
 
 # 관광객 수 데이터 조정
