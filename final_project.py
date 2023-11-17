@@ -89,7 +89,7 @@ if uploaded_file is not None:
     simil_df = simil_df[['명칭', 'similar_score']].iloc[:20]
     
     trip = pd.merge(simil_df, address, on = '명칭', how = 'inner')
-    df.clear()
+    df = None
 
     # 관광객 수 데이터 조정 및 위경도 관련 데이터 불러오기
     people = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/tourist_prediction_2324.csv', encoding='utf-8-sig', index_col=0)
@@ -171,5 +171,5 @@ def result_output(result_list, user_month, user_day):
     m.save('result.html')
     return m
 
-if uploaded_file is not None:
+if d and uploaded_file is not None:
     st.write(result_output(result_list, month, day))
