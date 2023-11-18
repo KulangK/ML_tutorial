@@ -102,7 +102,7 @@ if uploaded_file is not None:
     people = None
     
     result_list = list(trip['명칭'])
-    result_temp = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/temp_test.csv')
+    result_temp = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/temp_prophet.csv')
     lat_lon_peo = pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_peo.csv')
     lat_lon_tem= pd.read_csv('https://raw.githubusercontent.com/KulangK/Zerobase_Tutorials/main/Final_Project/lat_lon_tem.csv')
 
